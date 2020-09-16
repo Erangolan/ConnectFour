@@ -9,8 +9,8 @@ using UnityEngine.UI;
 
 public class SC_MenuLogic : MonoBehaviour
 {
-    private string apiKey = "889f091bbde99552d675a69510a8a936003ad0ff22eaf643ef642452af6ca7da";
-    private string secretKey = "ddf2de61b0a9a74a70481c5ad29d9cf798e3466034752e3424d1f3d106125399";
+    private string apiKey;
+    private string secretKey;
     public Dictionary<string, GameObject> unityObjects;
     private Dictionary<string, object> matchRoomData;
     public Listener listen;
