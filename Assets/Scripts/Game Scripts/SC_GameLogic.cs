@@ -54,11 +54,6 @@ public class SC_GameLogic : MonoBehaviour
         Init();
     }
 
-    private void Update()
-    {
-        Timer();
-    }
-
     #endregion
 
     #region Logic
@@ -192,7 +187,6 @@ public class SC_GameLogic : MonoBehaviour
             if (row < 5)
                 unityObjects["Btn_Slot" + ((row + 1) * 10 + col)].GetComponent<Button>().interactable = true;
 
-            //GlobalEnums.MatchState _isOver = IsMatchOver();
             _currentState = IsMatchOver();
             if (_currentState == GlobalEnums.MatchState.Tie || _currentState == GlobalEnums.MatchState.Winner)
             {
@@ -215,10 +209,8 @@ public class SC_GameLogic : MonoBehaviour
                     unityObjects["Txt_PopUp_Winner"].GetComponent<Text>().text = "The game is Tied";
                 }
                 gameStarted = false;
-                unityObjects["Txt_TurnTime"].GetComponent<Text>().text = string.Empty;
-                //WarpClient.GetInstance().stopGame();
             }
-            else 
+            else
                 PassTurn();
 
             if (GlobalVariables.curOpponent == GlobalEnums.Opponent.AI &&
@@ -253,18 +245,6 @@ public class SC_GameLogic : MonoBehaviour
         PlacementLogic(_idx);
     }
 
-    private void Timer()
-    {
-        if (gameStarted)
-        {
-            float _curTime = Time.time - startTime;
-            float _leftTime = GlobalVariables.turnTime - _curTime;
-            if (_leftTime > 0)
-                unityObjects["Txt_TurnTime"].GetComponent<Text>().text = ((int)_leftTime).ToString();
-            else unityObjects["Txt_TurnTime"].GetComponent<Text>().text = "0";
-        }
-    }
-
     #endregion
 
     #region Controller
@@ -292,13 +272,13 @@ public class SC_GameLogic : MonoBehaviour
             unityObjects["PopUp_GameOver"].SetActive(false);
             WarpClient.GetInstance().startGame();
         }
-        else 
+        else
             RestartGame();
     }
 
     public void PointerEnter(string _Index)
     {
-        if (unityObjects["Btn_Slot" + _Index].GetComponent<Button>().interactable == true)
+        if (unityObjects["Btn_Slot" + _Index].GetComponent<Button>().interactable == true && isMyTurn)
             unityObjects["Btn_Slot" + _Index].GetComponent<SC_Slot>().ChangeSlotState(GlobalEnums.SlotState.Black);
     }
 
@@ -353,7 +333,7 @@ public class SC_GameLogic : MonoBehaviour
         startTime = Time.time;
         if (_Move.getNextTurn() == GlobalVariables.userId)
             isMyTurn = true;
-        else 
+        else
             isMyTurn = false;
     }
 
